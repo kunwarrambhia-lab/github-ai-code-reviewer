@@ -1,23 +1,31 @@
 from fastapi import FastAPI
-from backend.services.github_api import get_pull_requests
 
-app = FastAPI(
-    title="GitHub AI Code Reviewer",
-    version="1.0.0"
+from backend.services.github_api import (
+    get_pull_requests,
+    get_pull_request_details,
+    get_pull_request_files
 )
+
+app = FastAPI()
+
 
 @app.get("/")
 def home():
     return {
-        "message": "GitHub AI Code Reviewer API is running!"
+        "message": "AI Code Reviewer API"
     }
 
-@app.get("/health")
-def health():
-    return {
-        "status": "healthy"
-    }
 
 @app.get("/prs/{owner}/{repo}")
 def fetch_prs(owner: str, repo: str):
     return get_pull_requests(owner, repo)
+
+
+@app.get("/pr/{owner}/{repo}/{pr_number}")
+def fetch_pr(owner: str, repo: str, pr_number: int):
+    return get_pull_request_details(owner, repo, pr_number)
+
+
+@app.get("/files/{owner}/{repo}/{pr_number}")
+def fetch_pr_files(owner: str, repo: str, pr_number: int):
+    return get_pull_request_files(owner, repo, pr_number)
