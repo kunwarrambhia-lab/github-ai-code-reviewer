@@ -51,8 +51,6 @@ github-ai-code-reviewer/
 └── README.md
 ```
 
-*The structure above is illustrative; update it if your actual files differ.*
-
 ## Prerequisites
 
 - Python 3.10 or a compatible version for the installed dependencies
