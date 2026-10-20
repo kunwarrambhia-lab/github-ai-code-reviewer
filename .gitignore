@@ -1,5 +1,26 @@
-venv/
-__pycache__/
+
+# Environment variables and secrets
 .env
-.pytest_cache/
+.env.*
+!.env.example
+
+# Python
+venv/
+.venv/
+__pycache__/
 *.pyc
+.pytest_cache/
+
+# Frontend
+node_modules/
+.next/
+out/
+
+# Local databases
+chroma_db/
+*.sqlite3
+
+# Editor and operating system
+.vscode/
+.DS_Store
+Thumbs.db
