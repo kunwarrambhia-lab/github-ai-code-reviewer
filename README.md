@@ -1,22 +1,22 @@
 # GitHub AI Code Reviewer
 
-An AI-powered tool for reviewing GitHub Pull Requests using **FastAPI, Groq, ChromaDB, and Next.js**.
+An AI-powered GitHub Pull Request review assistant built with **FastAPI, Groq, ChromaDB, and Next.js**. It helps developers understand code changes, explore potential issues, and obtain AI-generated code review feedback through an interactive dashboard.
 
 ## Overview
 
-GitHub AI Code Reviewer analyzes pull request changes and provides AI-generated feedback to help developers understand code modifications, identify potential risks, and improve code quality.
+GitHub AI Code Reviewer combines GitHub API integration, large language models, semantic search, and vector storage to assist with Pull Request analysis.
 
-The project combines GitHub API integration, semantic search, vector storage, and large language models in an interactive web dashboard.
+Developers can retrieve Pull Request information, index code changes, generate AI-powered reviews, ask contextual questions, and export review reports in Markdown format.
 
 ## Features
 
-- **Pull Request Analysis:** Fetch and review GitHub pull requests.
-- **AI Code Review:** Generate detailed reviews with summaries, potential risks, security considerations, and performance suggestions.
-- **Semantic Search:** Retrieve relevant code patches using ChromaDB.
-- **AI Pull Request Assistant:** Ask questions about a selected pull request using natural language.
-- **Interactive Dashboard:** View pull request details, changed files, and review results.
-- **Report Export:** Download code review reports in Markdown format.
-- **REST API:** Use FastAPI endpoints to access review and analysis functionality.
+- **Pull Request Analysis:** Retrieve Pull Request details and changed files from GitHub.
+- **AI-Powered Code Review:** Generate review summaries, potential risks, and improvement suggestions.
+- **Semantic Search:** Search indexed Pull Request patches using ChromaDB.
+- **AI Pull Request Assistant:** Ask natural-language questions about indexed code changes.
+- **Interactive Dashboard:** Explore Pull Request information and review results through a web interface.
+- **Markdown Report Export:** Save review feedback for future reference.
+- **REST API:** Access backend functionality through FastAPI endpoints.
 
 ## Technology Stack
 
@@ -24,10 +24,10 @@ The project combines GitHub API integration, semantic search, vector storage, an
 |---|---|
 | Frontend | Next.js, React, TypeScript, Tailwind CSS |
 | Backend | Python, FastAPI |
-| AI Model | Groq API |
+| Language Model API | Groq |
 | Vector Database | ChromaDB |
-| Code Embeddings | Project embedding service |
-| Integration | GitHub API |
+| Embeddings | Project embedding service |
+| Version Control Integration | GitHub API |
 | HTTP Client | Axios |
 
 ## Project Structure
@@ -53,51 +53,46 @@ github-ai-code-reviewer/
 
 ## Prerequisites
 
-- Python 3.10 or a compatible version for the installed dependencies
+- Python and pip, compatible with the project's dependencies
 - Node.js and npm
-- A GitHub personal access token with the required repository access
+- A GitHub Personal Access Token with appropriate repository permissions
 - A Groq API key
 
-## Setup and Installation
+## Installation and Setup
 
-### 1. Clone the repository
+### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/github-ai-code-reviewer.git
+git clone https://github.com/kunwarrambhia-lab/github-ai-code-reviewer.git
 cd github-ai-code-reviewer
 ```
 
-Replace `YOUR_USERNAME` with your GitHub username.
+### 2. Configure the Backend
 
-### 2. Set up the backend
+Create a Python virtual environment from the project root.
 
-Create and activate a virtual environment on Windows:
+**Windows PowerShell**
 
 ```powershell
 python -m venv venv
 .\venv\Scripts\Activate.ps1
-```
-
-Install the Python dependencies:
-
-```powershell
 pip install -r requirements.txt
 ```
 
-### 3. Configure environment variables
+### 3. Configure Environment Variables
 
-Create a `.env` file in the project root, using the following template:
+Create a `.env` file in the project root, using `.env.example` as a reference.
 
 ```env
-GITHUB_TOKEN=your_github_token
-GROQ_API_KEY=your_groq_api_key
+GITHUB_TOKEN=your_github_token_here
+GROQ_API_KEY=your_groq_api_key_here
 ```
 
-Replace the placeholders with your own credentials. Never commit your actual `.env` file or expose API keys.
+Replace the placeholders with your own credentials. Never commit your actual `.env` file or expose API keys publicly.
 
-### 4. Start the backend
+### 4. Start the Backend
 
-Run this command from the project root:
+From the project root, run:
 
 ```powershell
 python -m uvicorn backend.app:app --reload
@@ -105,15 +100,12 @@ python -m uvicorn backend.app:app --reload
 
 The backend should be available at:
 
-`http://127.0.0.1:8000`
+- **API:** http://127.0.0.1:8000
+- **Interactive API documentation:** http://127.0.0.1:8000/docs
 
-Interactive API documentation:
+### 5. Configure and Start the Frontend
 
-`http://127.0.0.1:8000/docs`
-
-### 5. Set up the frontend
-
-Open another terminal:
+Open a second terminal and run:
 
 ```powershell
 cd frontend
@@ -121,56 +113,67 @@ npm install
 npm run dev
 ```
 
-Open the local URL displayed in the terminal, typically `http://localhost:3000`. If that port is busy, Next.js may use another port.
+Open the local URL printed in the terminal. It is commonly `http://localhost:3000`, although another port may be selected if that port is occupied.
+
+Keep the backend running while using the frontend. Configure the frontend API URL if your local setup requires a different backend address.
 
 ## How to Use
 
 1. Start the backend and frontend.
 2. Open the dashboard in your browser.
-3. Enter a GitHub repository owner, repository name, and pull request number.
-4. Fetch or select the pull request.
-5. Generate an AI-powered code review.
-6. Explore changed files and review recommendations.
-7. Ask follow-up questions in the AI Pull Request Assistant.
-8. Download the report for later reference.
+3. Enter the GitHub repository owner, repository name, and Pull Request number.
+4. Retrieve the Pull Request details and changed files.
+5. Index the Pull Request when semantic search or contextual retrieval is needed.
+6. Generate an AI-powered code review.
+7. Explore the feedback and ask follow-up questions.
+8. Export the review as a Markdown report.
+
+The available functionality depends on the Pull Request context, configured API credentials, and the implementation of each feature.
 
 ## API Endpoints
+
+The following endpoints describe the intended API interface; verify them against the current backend implementation.
 
 | Method | Endpoint | Purpose |
 |---|---|---|
 | GET | `/` | API welcome message |
-| GET | `/health` | Check backend status |
-| GET | `/prs/{owner}/{repo}` | Fetch pull requests |
-| GET | `/pr/{owner}/{repo}/{pr_number}` | Fetch pull request details |
-| GET | `/files/{owner}/{repo}/{pr_number}` | Fetch changed files |
-| POST | `/index/{owner}/{repo}/{pr_number}` | Index a pull request |
+| GET | `/health` | Backend health check |
+| GET | `/prs/{owner}/{repo}` | Retrieve Pull Requests |
+| GET | `/pr/{owner}/{repo}/{pr_number}` | Retrieve Pull Request details |
+| GET | `/files/{owner}/{repo}/{pr_number}` | Retrieve changed files |
+| POST | `/index/{owner}/{repo}/{pr_number}` | Index Pull Request content |
 | GET | `/search` | Search indexed code patches |
 | GET | `/review` | Generate a code review |
 | GET | `/analyze` | Retrieve structured analysis |
-| GET | `/chat` | Ask questions about a pull request |
+| GET | `/chat` | Ask questions about Pull Request content |
+
+For the exact routes, parameters, and request formats, start the backend and open the interactive API documentation at `http://127.0.0.1:8000/docs`.
 
 ## Security and Limitations
 
-- Keep GitHub and Groq credentials in environment variables.
-- Do not commit `.env`, virtual environments, API keys, or local database files.
-- AI-generated reviews can contain false positives or miss defects. Verify suggestions against the actual source code.
-- Results depend on the retrieved patches and the available pull request context.
-- Structured findings may not capture every issue discussed in the narrative review.
+- Store API credentials in environment variables and keep `.env` out of version control.
+- Do not commit API keys, access tokens, private source code, or local database files.
+- AI-generated feedback can contain false positives or miss defects.
+- Review suggestions against the actual source code and run appropriate tests before applying changes.
+- Review quality depends on the available Pull Request context, retrieved code, and language model output.
+- This tool assists developers; it does not replace human review or a dedicated security audit.
 
 ## Future Improvements
 
 - Improve structured finding extraction and categorization.
-- Add more automated tests and error-handling coverage.
-- Support richer review history and comparisons.
+- Expand automated testing and error handling.
+- Add review history and Pull Request comparisons.
 - Improve report formatting and export options.
-- Explore automated review workflows for GitHub pull requests.
+- Explore automated review workflows and continuous integration.
 
 ## Disclaimer
 
-This project is intended as a developer-assistance tool. AI-generated findings are suggestions, not a substitute for human code review, testing, or security audits.
+This project is intended for developer assistance and educational use. AI-generated findings are suggestions and should be independently verified before implementation.
 
 ## Author
 
-Kunwar Amit Rambhia
+**Kunwar Amit Rambhia**
 
-GitHub: https://github.com/kunwarrambhia-lab
+GitHub: [kunwarrambhia-lab](https://github.com/kunwarrambhia-lab)
+
+Project repository: [GitHub AI Code Reviewer](https://github.com/kunwarrambhia-lab/github-ai-code-reviewer)
